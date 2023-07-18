@@ -1,131 +1,61 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class GameInstallation {
+    private static StringBuilder logBuilder = new StringBuilder();
+
     public static void main(String[] args) {
-        String gamesDirPath = "D:\\Netology.project\\Блок JavaCore\\Games"; // Замените на свой путь к папке Games
+        List<String> directories = List.of(
+                "D:\\Netology.project\\Блок JavaCore\\Games\\src",
+                "D:\\Netology.project\\Блок JavaCore\\Games\\src\\main",
+                "D:\\Netology.project\\Блок JavaCore\\Games\\src\\test",
+                "D:\\Netology.project\\Блок JavaCore\\Games\\res",
+                "D:\\Netology.project\\Блок JavaCore\\Games\\res\\drawables",
+                "D:\\Netology.project\\Блок JavaCore\\Games\\res\\vectors",
+                "D:\\Netology.project\\Блок JavaCore\\Games\\res\\icons",
+                "D:\\Netology.project\\Блок JavaCore\\Games\\savegames",
+                "D:\\Netology.project\\Блок JavaCore\\Games\\temp"
+        );
 
-        File gameDir = new File(gamesDirPath);
-        boolean created = gameDir.mkdirs();
-        if (created) {
-            System.out.println("Папка Games создана(дата/время)- [03.07.2023] [15:00]");
-        } else {
-            System.out.println("Не удалось создать папку Games.");
-            return;
+        for (String directory : directories) {
+            createDirectory(directory);
         }
 
-        File srcDir = new File(gamesDirPath, "src");
-        created = srcDir.mkdirs();
-        if (created) {
-            System.out.println("Папка src создана(дата/время)- [03.07.2023] [15:10]");
-        } else {
-            System.out.println("Не удалось создать папку src.");
-            return;
-        }
+        createFile("D:\\Netology.project\\Блок JavaCore\\Games\\src\\main\\Main.java");
+        createFile("D:\\Netology.project\\Блок JavaCore\\Games\\src\\main\\Utils.java");
 
-        File mainDir = new File(srcDir, "main");
-        created = mainDir.mkdir();
-        if (created) {
-            System.out.println("Папка main создана(дата/время)- [03.07.2023] [15:15]");
-        } else {
-            System.out.println("Не удалось создать папку main.");
-            return;
-        }
+        createFileLog("D:\\Netology.project\\Блок JavaCore\\Games\\temp\\temp.txt");
+    }
 
-        File testDir = new File(srcDir, "test");
-        created = testDir.mkdir();
-        if (created) {
-            System.out.println("Папка test создана(дата/время)- [03.07.2023] [15:30]");
-        } else {
-            System.out.println("Не удалось создать папку test.");
-            return;
-        }
+    public static void createDirectory(String path) {
+        File directory = new File(path);
+        boolean created = directory.mkdirs();
+        String status = created ? "успешно" : "не удалось";
+        logBuilder.append("Папка ").append(path).append(" создана (дата/время) - ")
+                .append(LocalDateTime.now()).append(", ").append(status).append("\n");
+    }
 
-        File mainFile = new File(mainDir, "Main.java");
+    public static void createFile(String filePath) {
+        File file = new File(filePath);
         try {
-            mainFile.createNewFile();
-            System.out.println("Файл Main.java создана(дата/время)- [04.07.2023] [9:40]");
+            boolean created = file.createNewFile();
+            String status = created ? "успешно" : "не удалось";
+            logBuilder.append("Файл ").append(filePath).append(" создан (дата/время) - ")
+                    .append(LocalDateTime.now()).append(", ").append(status).append("\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
-        File utilsFile = new File(mainDir, "Utils.java");
-        try {
-            utilsFile.createNewFile();
-            System.out.println("Файл Utils.java создана(дата/время)- [04.07.2023] [9:46]");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        File resDir = new File(gamesDirPath, "res");
-        created = resDir.mkdirs();
-        if (created) {
-            System.out.println("Папка res создана(дата/время)- [04.07.2023] [9:50]");
-        } else {
-            System.out.println("Не удалось создать папку");
-        }
-
-        File drawablesDir = new File(resDir, "drawables");
-        created = drawablesDir.mkdir();
-        if (created) {
-            System.out.println("Папка drawables создана(дата/время)- [04.07.2023] [9:59]");
-        } else {
-            System.out.println("Не удалось создать папку");
-        }
-
-
-        File vectorsDir = new File(resDir, "vectors");
-        created = vectorsDir.mkdir();
-        if (created) {
-            System.out.println("Папка vectors создана(дата/время)- [04.07.2023] [10:01]");
-        } else {
-            System.out.println("Не удалось создать папку");
-        }
-
-        File iconsDir = new File(resDir, "icons");
-        created = iconsDir.mkdir();
-        if (created) {
-            System.out.println("Папка icons создана(дата/время)- [04.07.2023] [10:02]");
-        } else {
-            System.out.println("Не удалось создать папку");
-        }
-
-        File saveGamesDir = new File(gamesDirPath, "savegames");
-        created = saveGamesDir.mkdir();
-        if (created) {
-            System.out.println("Папка savegames создана(дата/время)- [04.07.2023] [9:55]");
-        } else {
-            System.out.println("Не удалось создать папку");
-        }
-
-        File tempDir = new File(gamesDirPath, "temp");
-        created = tempDir.mkdir();
-        if (created) {
-            System.out.println("Папка temp создана(дата/время)- [04.07.2023] [10:06]");
-        } else {
-            System.out.println("Не удалось создать папку");
-        }
-
-        File tempFile = new File(tempDir, "temp.txt");
-        try {
-            tempFile.createNewFile();
-            System.out.println("Файл temp.txt создана(дата/время)- [04.07.2023] [10:25]");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        StringBuilder logBuilder = new StringBuilder();
-        logBuilder.append("Все файлы и папки успешно созданы");
-
-        try (FileWriter writer = new FileWriter(tempFile)) {
+    public static void createFileLog(String filePath) {
+        try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(logBuilder.toString());
             System.out.println("Лог успешно записан в файл temp.txt");
         } catch (IOException e) {
-            System.out.println("Ошибка при записи лога в файл temp.txt " + e.getMessage());
+            System.out.println("Ошибка при записи лога в файл temp.txt: " + e.getMessage());
         }
-
-
     }
 }
